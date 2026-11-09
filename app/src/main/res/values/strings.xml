@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Roblox Helper</string>
+    <string name="intro_principal">Plantillas de scripts en Luau para Roblox Studio. Elige una, ajusta sus valores y copia el código a tu juego.</string>
+    <string name="formato_ubicacion">Dónde ponerlo: %1$s</string>
+    <string name="etiqueta_parametros">Valores personalizables</string>
+    <string name="boton_actualizar">Actualizar código</string>
+    <string name="boton_copiar">Copiar</string>
+    <string name="boton_compartir">Compartir</string>
+    <string name="titulo_compartir">Compartir script</string>
+    <string name="copiado">Código copiado al portapapeles</string>
+</resources>
