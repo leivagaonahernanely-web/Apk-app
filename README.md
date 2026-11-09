@@ -1,19 +1,20 @@
 # Roblox Helper
 
-Aplicación Android con plantillas de scripts en **Luau** para **Roblox Studio**.
-Eliges una plantilla, ajustas sus valores (por ejemplo, la velocidad o el daño),
-y copias o compartes el código para pegarlo en tu juego.
+App Android que usa IA para escribir scripts en **Luau** para **Roblox Studio**.
+Describes en español lo que necesitas (por ejemplo, "una puerta que se abra al
+pulsar E y se cierre sola a los 3 segundos") y la app te devuelve el código
+listo para pegar en tu juego. Puedes copiarlo o compartirlo.
 
-## Plantillas incluidas
+## Configurar la clave API
 
-| Plantilla | Para qué sirve | Dónde va el script |
-|---|---|---|
-| Puerta con botón | Puerta que se abre y cierra con un aviso de proximidad | Dentro de la Part de la puerta |
-| Monedas que suman | Recoger monedas y mostrar el marcador en la lista de jugadores | ServerScriptService |
-| Lava que daña | Zona que quita vida al tocarla | Dentro de la Part de lava |
-| Portal de teletransporte | Lleva al jugador a otra parte del mapa | Dentro de la Part del portal |
-| Velocidad al aparecer | Fija la velocidad de caminar al aparecer | ServerScriptService |
-| Botón en pantalla | Botón de interfaz que cambia su texto | LocalScript dentro de un ScreenGui |
+La app usa la API de Anthropic, así que necesitas una clave:
+
+1. Crea una cuenta en [console.anthropic.com](https://console.anthropic.com) y genera una clave API.
+2. En la app, pulsa **Configurar clave API** y pégala.
+
+La clave se guarda solo en el almacenamiento privado de la app del dispositivo.
+Cada generación consume créditos de tu cuenta. No compartas el APK con tu clave
+dentro.
 
 ## Cómo compilar el APK
 
@@ -24,25 +25,21 @@ Requisitos: [Android Studio](https://developer.android.com/studio) (incluye el S
 3. Ve a `Build > Build Bundle(s) / APK(s) > Build APK(s)`.
 4. El APK queda en `app/build/outputs/apk/debug/app-debug.apk`.
 
-La app no tiene dependencias externas, solo usa el SDK de Android.
-Compila para Android 5.0 (API 21) en adelante.
+No tiene dependencias externas. Compila para Android 5.0 (API 21) o superior.
 
 ## Estructura
 
 ```
 app/src/main/java/com/leivagaonahernanely/robloxhelper/
-  MainActivity.java       Lista de plantillas
-  TemplateActivity.java   Detalle, valores personalizables, copiar y compartir
-  RobloxTemplate.java     Modelo de plantilla y sustitución de marcadores
-  Templates.java          Catálogo de scripts
+  MainActivity.java   Pantalla principal, entrada, resultado y clave API
+  ApiClient.java      Llamada a la API de Anthropic (modelo claude-haiku-5-5)
+  CodeCleaner.java    Extrae el código de la respuesta
 ```
 
-Para añadir una plantilla, agrega una entrada en `Templates.TODAS`.
-Los valores personalizables se escriben en el código como `{{NOMBRE}}`
-y se declaran con su valor por defecto como último argumento.
+El modelo se cambia en `ApiClient.MODELO`. Las instrucciones que recibe la IA
+están en `ApiClient.SISTEMA`.
 
 ## Aviso
 
-Las plantillas son para crear juegos propios en Roblox Studio. No incluyen
-herramientas para alterar o explotar otros juegos, lo cual va contra las
-normas de Roblox.
+La app crea scripts para juegos propios en Roblox Studio. No está pensada para
+alterar ni explotar otros juegos, lo cual va contra las normas de Roblox.

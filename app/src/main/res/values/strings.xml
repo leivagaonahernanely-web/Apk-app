@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Roblox Helper</string>
-    <string name="intro_principal">Plantillas de scripts en Luau para Roblox Studio. Elige una, ajusta sus valores y copia el código a tu juego.</string>
-    <string name="formato_ubicacion">Dónde ponerlo: %1$s</string>
-    <string name="etiqueta_parametros">Valores personalizables</string>
-    <string name="boton_actualizar">Actualizar código</string>
+    <string name="intro_principal">Describe en español el script que necesitas para tu juego de Roblox y la IA lo escribe en Luau.</string>
+    <string name="hint_entrada">Ej: quiero una puerta que se abra al pulsar E y se cierre sola a los 3 segundos</string>
+    <string name="boton_generar">Generar script</string>
+    <string name="generando">Generando código…</string>
     <string name="boton_copiar">Copiar</string>
     <string name="boton_compartir">Compartir</string>
+    <string name="boton_clave">Configurar clave API</string>
     <string name="titulo_compartir">Compartir script</string>
     <string name="copiado">Código copiado al portapapeles</string>
+    <string name="titulo_clave">Clave API de Anthropic</string>
+    <string name="explicacion_clave">La clave se guarda solo en este dispositivo. Se usa para generar el código y puede generar costes en tu cuenta.</string>
+    <string name="hint_clave">sk-ant-…</string>
+    <string name="guardar">Guardar</string>
+    <string name="error_sin_descripcion">Escribe primero qué script necesitas.</string>
+    <string name="error_sin_clave">Falta la clave API. Configúrala abajo.</string>
+    <string name="error_generico">No se pudo generar el código: %1$s</string>
 </resources>
