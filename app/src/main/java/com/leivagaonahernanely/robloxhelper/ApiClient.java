@@ -12,15 +12,16 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Llama a la API de Anthropic (Messages) para generar código Luau.
+ * Llama a la API de Gemini (generateContent) para generar código Luau.
  * Usa solo clases del SDK de Android, sin librerías externas.
  */
 public final class ApiClient {
 
     /** Modelo que genera el código. Cámbialo aquí si quieres otro. */
-    public static final String MODELO = "claude-haiku-5-5";
+    public static final String MODELO = "gemini-3.5-flash-lite";
 
-    private static final String URL_API = "https://api.anthropic.com/v1/messages";
+    private static final String URL_BASE =
+            "https://generativelanguage.googleapis.com/v1beta/models/";
 
     private static final String SISTEMA =
             "Eres un experto en Roblox Studio y en el lenguaje Luau. "
@@ -39,23 +40,31 @@ public final class ApiClient {
 
     public static String generarCodigo(String claveApi, String descripcion) throws Exception {
         JSONObject cuerpo = new JSONObject();
-        cuerpo.put("model", MODELO);
-        cuerpo.put("max_tokens", 2048);
-        cuerpo.put("system", SISTEMA);
 
-        JSONArray mensajes = new JSONArray();
-        mensajes.put(new JSONObject().put("role", "user").put("content", descripcion));
-        cuerpo.put("messages", mensajes);
+        JSONObject instruccionSistema = new JSONObject();
+        instruccionSistema.put("parts", new JSONArray()
+                .put(new JSONObject().put("text", SISTEMA)));
+        cuerpo.put("systemInstruction", instruccionSistema);
 
-        HttpURLConnection con = (HttpURLConnection) new URL(URL_API).openConnection();
+        JSONObject mensaje = new JSONObject();
+        mensaje.put("role", "user");
+        mensaje.put("parts", new JSONArray()
+                .put(new JSONObject().put("text", descripcion)));
+        cuerpo.put("contents", new JSONArray().put(mensaje));
+
+        JSONObject configuracion = new JSONObject();
+        configuracion.put("maxOutputTokens", 2048);
+        cuerpo.put("generationConfig", configuracion);
+
+        HttpURLConnection con = (HttpURLConnection) new URL(URL_BASE + MODELO + ":generateContent")
+                .openConnection();
         try {
             con.setRequestMethod("POST");
             con.setConnectTimeout(20000);
             con.setReadTimeout(120000);
             con.setDoOutput(true);
-            con.setRequestProperty("content-type", "application/json");
-            con.setRequestProperty("x-api-key", claveApi);
-            con.setRequestProperty("anthropic-version", "2023-06-01");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("x-goog-api-key", claveApi);
 
             try (OutputStream salida = con.getOutputStream()) {
                 salida.write(cuerpo.toString().getBytes(StandardCharsets.UTF_8));
@@ -68,16 +77,23 @@ public final class ApiClient {
             JSONObject json = new JSONObject(texto);
             if (codigo >= 400) {
                 JSONObject error = json.optJSONObject("error");
-                String mensaje = error != null ? error.optString("message", texto) : texto;
-                throw new IOException("HTTP " + codigo + ": " + mensaje);
+                String mensaje2 = error != null ? error.optString("message", texto) : texto;
+                throw new IOException("HTTP " + codigo + ": " + mensaje2);
             }
 
-            JSONArray contenido = json.getJSONArray("content");
+            JSONArray candidatos = json.optJSONArray("candidates");
+            if (candidatos == null || candidatos.length() == 0) {
+                throw new IOException("La respuesta no contiene candidatos");
+            }
+            JSONArray partes = candidatos.getJSONObject(0)
+                    .optJSONObject("content") != null
+                    ? candidatos.getJSONObject(0).getJSONObject("content").optJSONArray("parts")
+                    : null;
+
             StringBuilder resultado = new StringBuilder();
-            for (int i = 0; i < contenido.length(); i++) {
-                JSONObject bloque = contenido.getJSONObject(i);
-                if ("text".equals(bloque.optString("type"))) {
-                    resultado.append(bloque.getString("text"));
+            if (partes != null) {
+                for (int i = 0; i < partes.length(); i++) {
+                    resultado.append(partes.getJSONObject(i).optString("text", ""));
                 }
             }
             if (resultado.length() == 0) {

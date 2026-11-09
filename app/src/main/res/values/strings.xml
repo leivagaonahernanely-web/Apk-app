@@ -10,9 +10,9 @@
     <string name="boton_clave">Configurar clave API</string>
     <string name="titulo_compartir">Compartir script</string>
     <string name="copiado">Código copiado al portapapeles</string>
-    <string name="titulo_clave">Clave API de Anthropic</string>
-    <string name="explicacion_clave">La clave se guarda solo en este dispositivo. Se usa para generar el código y puede generar costes en tu cuenta.</string>
-    <string name="hint_clave">sk-ant-…</string>
+    <string name="titulo_clave">Clave API de Gemini</string>
+    <string name="explicacion_clave">La clave se guarda solo en este dispositivo y se usa para generar el código. Las llamadas pueden generar costes en tu cuenta de Google.</string>
+    <string name="hint_clave">Pega tu clave aquí</string>
     <string name="guardar">Guardar</string>
     <string name="error_sin_descripcion">Escribe primero qué script necesitas.</string>
     <string name="error_sin_clave">Falta la clave API. Configúrala abajo.</string>

@@ -7,14 +7,13 @@ listo para pegar en tu juego. Puedes copiarlo o compartirlo.
 
 ## Configurar la clave API
 
-La app usa la API de Anthropic, así que necesitas una clave:
+La app usa la API de Gemini (modelo `gemini-3.5-flash-lite`):
 
-1. Crea una cuenta en [console.anthropic.com](https://console.anthropic.com) y genera una clave API.
+1. Obtén una clave en Google AI Studio.
 2. En la app, pulsa **Configurar clave API** y pégala.
 
 La clave se guarda solo en el almacenamiento privado de la app del dispositivo.
-Cada generación consume créditos de tu cuenta. No compartas el APK con tu clave
-dentro.
+No la subas al repositorio ni compartas el APK con la clave ya configurada.
 
 ## Cómo compilar el APK
 
@@ -32,7 +31,7 @@ No tiene dependencias externas. Compila para Android 5.0 (API 21) o superior.
 ```
 app/src/main/java/com/leivagaonahernanely/robloxhelper/
   MainActivity.java   Pantalla principal, entrada, resultado y clave API
-  ApiClient.java      Llamada a la API de Anthropic (modelo claude-haiku-5-5)
+  ApiClient.java      Llamada a la API de Gemini (generateContent)
   CodeCleaner.java    Extrae el código de la respuesta
 ```
 
